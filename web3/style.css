@@ -1,80 +1,135 @@
-/* Set the font for the form */
 body {
+  margin: 0;
+  padding: 0;
   font-family: 'Montserrat', sans-serif;
+  background-color: #f7f7f7;
 }
 
-/* Style the form header */
-.form-head {
+form {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 40px;
+  margin: 40px;
+}
+
+.form-head h1 {
+  font-size: 40px;
+  line-height: 1.2;
   text-align: center;
   margin-bottom: 30px;
 }
-.form-head h1 {
-  font-size: 36px;
-  color: #333;
-}
 
-/* Style the form items */
 .form-item {
   margin-bottom: 20px;
 }
-.date {
-  margin-top: 10px;
-  font-size: 18px;
-}
-.date select {
-  font-size: 18px;
-}
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-ul li {
-  display: inline-block;
-  margin-right: 20px;
-  font-size: 18px;
-}
-ul li:last-child {
-  margin-right: 0;
+
+.group1,
+.group2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Style the text area */
-textarea {
-  width: 100%;
+.line {
+  flex: 1;
+  border: none;
+  border-bottom: 2px solid #ddd;
   padding: 10px;
-  margin-top: 5px;
-  border: 2px solid #ccc;
-  border-radius: 5px;
   font-size: 18px;
+  margin-right: 10px;
 }
 
-/* Style the submit button */
-.btn {
-  display: block;
-  width: 100%;
+.labelText {
+  position: absolute;
+  top: 12px;
+  left: 10px;
+  font-size: 18px;
+  transition: all 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+.line:focus + .labelText,
+.line:not(:placeholder-shown) + .labelText {
+  top: -10px;
+  left: 0;
+  color: #0077ff;
+  font-size: 14px;
+}
+
+.date span {
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+select {
+  font-size: 18px;
   padding: 10px;
   border: none;
   border-radius: 5px;
-  background-color: #333;
-  color: #fff;
-  font-size: 24px;
-  cursor: pointer;
-}
-.btn:hover {
-  background-color: #555;
+  background-color: #f7f7f7;
+  margin-right: 10px;
 }
 
-/* Style the contract checkbox */
-.contract {
-  margin-bottom: 10px;
-}
-.contract label {
+p {
   font-size: 18px;
 }
 
-/* Style the error messages */
-.error {
-  color: red;
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.big-text {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.small-text {
+  font-size: 14px;
   margin-top: 5px;
-  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+textarea {
+  font-size: 18px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  resize: none;
+}
+
+.send {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.contract label {
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+.btn {
+  font-size: 18px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #0077ff;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #005ce6;
 }
