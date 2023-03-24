@@ -1,22 +1,28 @@
 body {
-  margin: 0;
-  padding: 0;
+  background-color: #FFC0CB;
   font-family: 'Montserrat', sans-serif;
-  background-color: #f7f7f7;
 }
 
 form {
-  background-color: #fff;
+  width: 50%;
+  margin: 0 auto;
+  background-color: white;
+  padding: 50px;
   border-radius: 10px;
-  padding: 40px;
-  margin: 40px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.form-head {
+  text-align: center;
 }
 
 .form-head h1 {
-  font-size: 40px;
-  line-height: 1.2;
-  text-align: center;
-  margin-bottom: 30px;
+  margin: 0;
+  font-size: 36px;
+}
+
+.form-content {
+  margin-top: 30px;
 }
 
 .form-item {
@@ -25,106 +31,151 @@ form {
 
 .group1,
 .group2 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
 }
 
 .line {
-  flex: 1;
   border: none;
-  border-bottom: 2px solid #ddd;
-  padding: 10px;
-  font-size: 18px;
-  margin-right: 10px;
+  border-bottom: 1px solid black;
+  width: 100%;
+  font-size: 16px;
+  padding-bottom: 10px;
 }
 
-.labelText{
-    color: black;
+.labelText {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 16px;
+  pointer-events: none;
+  transition: all 0.3s ease;
 }
 
 .line:focus + .labelText,
 .line:not(:placeholder-shown) + .labelText {
-  top: -10px;
-  left: 0;
-  color: #0077ff;
-  font-size: 14px;
+  transform: translateX(-40px);
+  font-size: 12px;
+  font-weight: bold;
+  color: #FF69B4;
+}
+
+.date {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 16px;
 }
 
 .date span {
-  font-size: 18px;
   margin-right: 10px;
-}
-
-select {
-  font-size: 18px;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: #f7f7f7;
-  margin-right: 10px;
-}
-
-p {
-  font-size: 18px;
 }
 
 ul {
   list-style: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
-li {
+ul li {
   margin-bottom: 10px;
 }
 
-input[type="radio"],
-input[type="checkbox"] {
-  margin-right: 10px;
+ul li label {
+  margin-left: 5px;
 }
 
 .big-text {
   font-size: 18px;
-  margin-bottom: 5px;
 }
 
 .small-text {
   font-size: 14px;
-  margin-top: 5px;
-  margin-bottom: 20px;
+  color: gray;
 }
 
 textarea {
-  font-size: 18px;
+  width: 100%;
+  font-size: 16px;
   padding: 10px;
-  border: 2px;
-  border-radius: 5px;
   resize: none;
+  border-radius: 5px;
+  border: 1px solid gray;
 }
 
 .send {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
-.contract label {
-  font-size: 14px;
-  margin-left: 10px;
+.contract {
+  margin-bottom: 20px;
+  font-size: 16px;
 }
 
 .btn {
+  border: none;
+  background-color: #FF69B4;
+  color: white;
   font-size: 18px;
   padding: 10px 20px;
-  border: none;
   border-radius: 5px;
-  color: #fff;
-  background-color: #0077ff;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .btn:hover {
-  background-color: #005ce6;
+  background-color: #FF1493;
 }
+@media only screen and (max-width: 600px) {
+  form {
+  max-width: 100%;
+  padding: 15px;
+  }
+  
+  .form-head h1 {
+  font-size: 28px;
+  }
+  
+  .form-item {
+  margin-bottom: 10px;
+  }
+  
+  .group1, .group2 {
+  flex-direction: column;
+  }
+  
+  .group1 .line, .group2 .line {
+  margin-right: 0;
+  margin-bottom: 10px;
+  }
+  
+  .labelText {
+  margin-right: 0;
+  margin-bottom: 5px;
+  }
+  
+  .date {
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  }
+  
+  .date select {
+  margin-left: 0;
+  margin-top: 5px;
+  }
+  
+  .form-item label {
+  margin-left: 0;
+  }
+  
+  .form-item textarea {
+  margin-top: 5px;
+  }
+  
+  .btn {
+  padding: 8px 15px;
+  font-size: 16px;
+  }
+  }
+  
+  
