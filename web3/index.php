@@ -1,99 +1,157 @@
+<?php
 
+header('Content-Type: text/html; charset=UTF-8');
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
-  <link rel="stylesheet" href="style.css">
-  <title>Form</title>
-</head>
-<body>
-  <form action="" method="POST">
-    <div class="form-head">
-        <h1>Форма</h1>
-    </div>
-    <div class="form-content">
-      <div class="form-item">
-        <div class="group1">
-          <input class="line" name="name">
-          <label class="labelText" for="name">Имя</label>
-        </div>
-        <div class="group2">
-          <input class="line" name="email">
-          <label class="labelText" for="name">Email</label>
-        </div>
-      </div>
-      <div class="form-item">
-        <div class="date">
-          <span>Год рождения:</span>
-          <select name="year">
-            <?php 
-              for ($i = 2022; $i >= 1922; $i--) {
-                printf('<option value="%d">%d год</option>', $i, $i);
-              }
-            ?>
-          </select>
-        </div>
-      </div>
-      <div class="form-item">
-        <p>Пол:</p>
-        <ul>
-          <li>
-            <input type="radio" id="radioMale" name="sex" value="male" checked>
-            <label for="radioMale">Мужчина</label>
-          </li>
-          <li>
-            <input type="radio" id="radioFemale" name="sex" value="female">
-            <label for="radioFemale">Женщина</label>
-          </li>
-        </ul>
-      </div>
-      <div class="form-item">
-        <p>Правша или левша:</p>
-        <ul>
-          <li>
-            <input type="radio" id="radioRight" name="hand" value="right" checked>
-            <label for="radioRight">Правша</label>
-          </li>
-          <li>
-            <input type="radio" id="radioLeft" name="hand" value="left">
-            <label for="radioLeft">Левша</label>
-          </li>
-        </ul>
-      </div>
-      <div class="form-item">
-        <p>Выбери сверхспособности:</p>
-        <ul>
-          <li>
-            <input type="checkbox" id="god" name="abilities[]" value=1>
-            <label for="god">бессмертие</label>
-          </li>
-          <li>
-            <input type="checkbox" id="noclip" name="abilities[]" value=2>
-            <label for="noclip">прохождение сквозь стены</label>
-          </li>
-          <li>
-            <input type="checkbox" id="levitation" name="abilities[]" value=3>
-            <label for="levitation">левитация</label>
-          </li>
-        </ul> 
-      </div>
-      <div class="form-item">
-        <p class="big-text">Расскажи о себе:</p>
-        <p class="small-text">(макс. 128 символов, кириллица)</p>
-        <textarea name="biography" cols=24 rows=4 maxlength=128 spellcheck="false"></textarea>
-      </div>
-    </div>  
-    <div class="send">
-      <div class="contract">
-        <input type="checkbox" id="checkboxContract" name="checkboxContract">
-        <label for="checkboxContract">С контрактом ознакомлен</label>
-      </div>
-      <input class="btn" type="submit" name="submit" value="Отправить" />
-    </div>
-  </form>
-</body> 
-</html>
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+  if (!empty($_GET['save'])) {
+    print('
+      <p>
+        Спасибо, результаты сохранены.
+      </p>
+      ');
+  }
+  include('form.php');
+  exit();
+}
+
+$name = $_POST['name'];
+$email = $_POST['email'];
+$year = $_POST['year'];
+$sex = $_POST['sex'];
+$hand = $_POST['hand'];
+if(isset($_POST["abilities"])) {
+  $abilities = $_POST["abilities"];
+  $filtred_abilities = array_filter($abilities, 
+  function($value) {
+    return($value == 1 || $value == 2 || $value == 3);
+  }
+  );
+}
+$biography = $_POST['biography'];
+$checkboxContract = isset($_POST['checkboxContract']);
+
+$errors = FALSE;
+
+if (empty($name)) {
+  print('
+    <h1>
+      Заполните имя.
+    </h1>
+  <br/>');
+  $errors = TRUE;
+}
+
+if (empty($email)) {
+  print('
+    <h1>
+      Заполните email.
+    </h1>
+  <br/>');
+  $errors = TRUE;
+} else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+  print('
+    <h1>
+      Корректно* заполните email.
+    </h1>
+  <br/>');
+  $errors = TRUE;
+}
+
+if (!is_numeric($year)) {
+  print('
+    <h1>
+      Неправильный формат ввода года.
+    </h1>
+  <br/>');
+  $errors = TRUE;
+} else if ((2023 - $year) < 14) {
+  print('
+    <h1>
+      Извините, вам должно быть 14 лет.
+    </h1>
+  <br/>');
+  $errors = TRUE;
+}
+
+if ($sex != 'male' && $sex != 'female') {
+  print('
+    <h1>
+      Выбран неизвестный пол.
+    </h1>
+  <br/>');
+  $errors = TRUE;
+}
+
+if ($hand != 'right' && $hand != 'left') {
+  print('
+    <h1>
+      Выбрана неизвестная рука.
+    </h1>
+  <br/>');
+  $errors = TRUE;
+}
+
+if (empty($abilities)) {
+  print('
+    <h1>
+      Выберите хотя бы одну сверхспособность.
+    </h1>
+  <br/>');
+  $errors = TRUE;
+} else if (count($filtred_abilities) != count($abilities)) {
+  print('
+    <h1>
+      Выбрана неизвестная сверхспособность.
+    </h1>
+  <br/>');
+  $errors = TRUE;
+}
+
+if (empty($biography)) {
+  print('
+    <h1>
+      Расскажи о себе что-нибудь.
+    </h1>
+  <br/>');
+  $errors = TRUE;
+} else if (!preg_match('/^[\p{Cyrillic}\d\s,.!?-]+$/u', $biography)) {
+  print('
+    <h1>
+      Недопустимый формат ввода биографии.
+    </h1>
+  <br/>');
+  $errors = TRUE;
+} 
+
+if ($checkboxContract == '') {
+  print('
+    <h1>
+      Ознакомьтесь с контрактом.
+    </h1>
+  <br/>');
+  $errors = TRUE;
+}
+
+if ($errors) {
+  exit();
+}
+
+$user = 'u52847';
+$pass = '7320961';
+$db = new PDO('mysql:host=localhost;dbname=u52847', $user, $pass, array(PDO::ATTR_PERSISTENT => true));
+
+try {
+  $stmt = $db->prepare("INSERT INTO application (name, email, year, sex, hand, biography) VALUES (?, ?, ?, ?, ?, ?)");
+  $stmt->execute([$name, $email, $year, $sex, $hand, $biography]);
+  $application_id = $db->lastInsertId();
+  $stmt = $db->prepare("INSERT INTO abilities (application_id, superpower_id) VALUES (?, ?)");
+  foreach ($abilities as $superpower_id) {
+    $stmt->execute([$application_id, $superpower_id]);
+  }
+} catch (PDOException $e) {
+  print('Error : ' . $e->getMessage());
+  exit();
+}
+header('Location: ?save=1');
+?>
+
