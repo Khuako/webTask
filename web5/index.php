@@ -92,16 +92,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   }
 
   $values = array();
-  $values['name'] = empty($_COOKIE['name_value']) ? '' : strip_tags($_COOKIE['name_value']);
-  $values['email'] = empty($_COOKIE['email_value']) ? '' : strip_tags($_COOKIE['email_value']);
-  $values['year'] = empty($_COOKIE['year_value']) ? '' : strip_tags($_COOKIE['year_value']);
-  $values['gender'] = empty($_COOKIE['gender_value']) ? '' : strip_tags($_COOKIE['gender_value']);
-  $values['hand'] = empty($_COOKIE['hand_value']) ? '' : strip_tags($_COOKIE['hand_value']);
+  $values['name'] = empty($_COOKIE['name_value']) ? '' : htmlspecialchars(strip_tags($_COOKIE['name_value']));
+  $values['email'] = empty($_COOKIE['email_value']) ? '' : htmlspecialchars(strip_tags($_COOKIE['email_value']));
+  $values['year'] = empty($_COOKIE['year_value']) ? '' : htmlspecialchars(strip_tags($_COOKIE['year_value']));
+  $values['gender'] = empty($_COOKIE['gender_value']) ? '' : htmlspecialchars(strip_tags($_COOKIE['gender_value']));
+  $values['hand'] = empty($_COOKIE['hand_value']) ? '' : htmlspecialchars(strip_tags($_COOKIE['hand_value']));
   $values['abilities'] = empty($_COOKIE['abilities_value']) ? '' : strip_tags($_COOKIE['abilities_value']);
-  $values['biography'] = empty($_COOKIE['biography_value']) ? '' : strip_tags($_COOKIE['biography_value']);
-  $values['checkboxContract'] = empty($_COOKIE['checkboxContract_value']) ? '' : strip_tags($_COOKIE['checkboxContract_value']);
+  $values['biography'] = empty($_COOKIE['biography_value']) ? '' : htmlspecialchars(strip_tags($_COOKIE['biography_value']));
+  $values['checkboxContract'] = empty($_COOKIE['checkboxContract_value']) ? '' : htmlspecialchars(strip_tags($_COOKIE['checkboxContract_value']));
 
   if (count(array_filter($errors)) === 0 && !empty($_COOKIE[session_name()]) && session_start() && !empty($_SESSION['login'])) {
+    $_SESSION['token'] = bin2hex(random_bytes(32));
     $login = $_SESSION['login'];
     try {
       $stmt = $db->prepare("SELECT application_id FROM users WHERE login = ?");
@@ -117,25 +118,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       $abilities = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
 
       if (!empty($dates[0]['name'])) {
-        $values['name'] = $dates[0]['name'];
+        $values['name'] = htmlspecialchars(strip_tags($dates[0]['name']));
       }
       if (!empty($dates[0]['email'])) {
-        $values['email'] = $dates[0]['email'];
+        $values['email'] = htmlspecialchars(strip_tags($dates[0]['email']));
       }
       if (!empty($dates[0]['year'])) {
-        $values['year'] = $dates[0]['year'];
+        $values['year'] = htmlspecialchars(strip_tags($dates[0]['year']));
       }
       if (!empty($dates[0]['gender'])) {
-        $values['gender'] = $dates[0]['gender'];
+        $values['gender'] = htmlspecialchars(strip_tags($dates[0]['gender']));
       }
       if (!empty($dates[0]['hand'])) {
-        $values['hand'] = $dates[0]['hand'];
+        $values['hand'] = htmlspecialchars(strip_tags($dates[0]['hand']));
       }
       if (!empty($abilities)) {
         $values['abilities'] =  serialize($abilities);
       }
       if (!empty($dates[0]['biography'])) {
-        $values['biography'] = $dates[0]['biography'];
+        $values['biography'] = htmlspecialchars(strip_tags($dates[0]['biography']));
       }
 
     } catch (PDOException $e) {
@@ -263,6 +264,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   }
 
   if (!empty($_COOKIE[session_name()]) && session_start() && !empty($_SESSION['login'])) {
+    if (!empty($_POST['token']) && hash_equals($_POST['token'], $_SESSION['token'])) {
     $login = $_SESSION['login'];
     try {
       $stmt = $db->prepare("SELECT application_id FROM users WHERE login = ?");
@@ -291,7 +293,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         print('Error : ' . $e->getMessage());
         exit();
     }
-
+    } else {
+        die('Ошибка CSRF: недопустимый токен');
+    }
   }
   else {
     $login = 'user' . rand(1, 1000);
