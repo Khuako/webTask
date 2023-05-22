@@ -48,10 +48,10 @@
                     echo    '<tr>
                             <td style="font-weight: 700;">'; print($value['application_id']); echo '</td>
                             <td>
-                                <input class="input" name="name'.$value['application_id'].'" value="'; print(htmlspecialchars(strip_tags$value['name'])); echo '">
+                                <input class="input" name="name'.$value['application_id'].'" value="'; print(htmlspecialchars(strip_tags($value['name']))); echo '">
                             </td>
                             <td>
-                                <input class="input" name="email'.$value['application_id'].'" value="'; print(htmlspecialchars(strip_tags$value['email'])); echo '">
+                                <input class="input" name="email'.$value['application_id'].'" value="'; print(htmlspecialchars(strip_tags($value['email']))); echo '">
                             </td>
                             <td>
                                 <select name="year'.$value['application_id'].'">';
@@ -102,7 +102,7 @@
                                 </div>
                             </td>
                             <td>
-                                <textarea name="biography'.$value['application_id'].'" id="" cols="30" rows="4" maxlength="128">'; print htmlspecialchars(strip_tags$value['biography']); echo '</textarea>
+                                <textarea name="biography'.$value['application_id'].'" id="" cols="30" rows="4" maxlength="128">'; print htmlspecialchars(strip_tags($value['biography'])); echo '</textarea>
                             </td>
                             <td>
                                 <div class="column-item">
