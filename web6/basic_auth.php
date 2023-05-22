@@ -22,7 +22,7 @@ if ($row) {
 if ($_SERVER['PHP_AUTH_USER'] != $validUser || md5($_SERVER['PHP_AUTH_PW']) != $validPassHash) {
     requireLogin();
 }
-
+session_start();
 function requireLogin() {
     header('HTTP/1.1 401 Unanthorized');
     header('WWW-Authenticate: Basic realm="My site"');
